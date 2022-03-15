@@ -62,7 +62,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 //Note: MTKDRV_XXX are used by CTP
-#if defined(MTKDRV_PMIC) && defined(MTKDRV_PMIC_WRAP) && defined(MTKDRV_I2C)
+#if (defined(MTKDRV_PMIC) && defined(MTKDRV_PMIC_WRAP) && defined(MTKDRV_I2C)) || defined(MMC_MSDC_SD_CARD_SUPPORT)
 #include <upmu_hw.h>
 #else
 #define pmic_config_interface(RegNum, val, MASK, SHIFT)
@@ -185,7 +185,7 @@ static void msdc_set_gpio(u32 bits)
 }
 #endif
 
-#if defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM)
+#if (defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM)) || defined(MMC_MSDC_SD_CARD_SUPPORT)
 u32 hwPowerOn(MSDC_POWER powerId, MSDC_POWER_VOLTAGE powerVolt)
 {
 	u32 ret;
@@ -290,7 +290,7 @@ static u32 msdc_ldo_power(u32 on, MSDC_POWER powerId, MSDC_POWER_VOLTAGE powerVo
 
 	return 0;
 }
-#endif /* defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM) */
+#endif /* defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM) || defined(MMC_MSDC_SD_CARD_SUPPORT) */
 
 #if defined(FPGA_PLATFORM)
 void msdc_card_power(struct mmc_host *host, u32 on)
@@ -350,7 +350,7 @@ void msdc_card_power(struct mmc_host *host, u32 on)
 	//Preload and LK need not touch power since it is default on
 	MSG(CFG, "[SD%d] Turn %s card power \n", host->id, on ? "on" : "off");
 
-#if defined(MMC_MSDC_DRV_CTP)
+#if defined(MMC_MSDC_DRV_CTP) || defined(MMC_MSDC_SD_CARD_SUPPORT)
 	switch (host->id) {
 		case 0:
 			msdc_ldo_power(on, MSDC_VEMC, VOL_3000, &g_msdc0_flash);
@@ -379,7 +379,7 @@ void msdc_host_power(struct mmc_host *host, u32 on, u32 level)
 {
 	//Only CTP support power on/off for verification purose.
 	//Preload and LK need not touch power since it is default on
-#if defined(MMC_MSDC_DRV_CTP)
+#if defined(MMC_MSDC_DRV_CTP) || defined(MMC_MSDC_SD_CARD_SUPPORT)
 	u32 card_on = on;
 	if (host->id != 0) {
 		host->cur_pwr = level;
@@ -760,7 +760,7 @@ void msdc_gpio_and_pad_init(struct mmc_host *host)
 /**************************************************************/
 /* Section 5: Hard-code timing                                */
 /**************************************************************/
-#if defined(SLT) || defined(MMC_MSDC_DRV_CTP)
+#if defined(SLT) || defined(MMC_MSDC_DRV_CTP) || defined(MMC_MSDC_SD_CARD_SUPPORT)
 /* copy from autok.c */
 #define AUTOK_CKGEN_VALUE                       (0)
 #define AUTOK_CMD_LATCH_EN_HS400_PORT0_VALUE    (2)

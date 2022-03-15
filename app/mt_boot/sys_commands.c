@@ -75,6 +75,10 @@
 #include "aee/aee.h"
 #include <recovery.h>
 
+// For mmc debugging
+#include <mmc_common_inter.h>
+#include "mmc_core.h"
+
 /*** FIXME!!! #include <disp_drv.h>           // for DISP_IsLcmFound(), DISP_GetVRamSize() ***/
 BOOL DISP_IsLcmFound(void);
 UINT32 DISP_GetVRamSize(void);
@@ -844,3 +848,54 @@ void cmd_set_active(const char *arg, void *data, unsigned sz)
 		fastboot_fail("command parameter is not allowed!\n");
 }
 #endif
+void cmd_get_mmc_card_len(const char *arg, void *data, unsigned sz)
+{
+    const char *ptr = arg + 1;
+       int id = atoi(ptr);
+       char response[MAX_RSP_SIZE];
+       sprintf(response, "Going to verify card, id: %d", id);
+       fastboot_info(response);
+       struct mmc_card *card;
+       card=mmc_get_card(id);
+       sprintf(response, "Verification OK, nblks: %d, maxhz: %d, cid: %d", card->nblks, card->maxhz, card->raw_cid);
+       fastboot_info(response);
+       fastboot_okay(response);
+}
+
+void cmd_query_mmc_host(const char *arg, void *data, unsigned sz)
+{
+    const char *ptr = arg + 1;
+       int id = atoi(ptr);
+       char response[MAX_RSP_SIZE];
+       sprintf(response, "Going to query mmc host, id: %d", id);
+       fastboot_info(response);
+       struct mmc_host *host;
+       host=mmc_get_host(id);
+       sprintf(response, "Query OK, cur_pwr: %d, cur_bus_clk:%d", host->cur_pwr, host->cur_bus_clk);
+       fastboot_info(response);
+       fastboot_okay(response);
+}
+
+
+void cmd_mmc_init(const char *arg, void *data, unsigned sz)
+{
+    const char *ptr = arg + 1;
+    const char *ptr1 = arg + 3;
+    int id = atoi(ptr);
+    int mode = atoi(ptr1);
+    int err;
+    char response[MAX_RSP_SIZE];
+    sprintf(response, "Going to init mmc, id: %d, mode: %d", id, mode);
+    fastboot_info(response);
+    err=mmc_init(id, mode);
+    if(err){
+        sprintf(response, "MMC init failed, status: %d", err);
+        fastboot_info(response);
+        fastboot_fail("");
+    }
+    else{
+        sprintf(response, "MMC init succeed");
+        fastboot_info(response);
+        fastboot_okay("");
+    }
+}

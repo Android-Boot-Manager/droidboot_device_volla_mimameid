@@ -889,6 +889,9 @@ int fastboot_init(void *base, unsigned size)
 	fastboot_register("reboot-bootloader", cmd_reboot_bootloader, TRUE, FALSE);
 	fastboot_register("reboot-recovery",cmd_reboot_recovery, TRUE, FALSE);
 	fastboot_register("reboot-fastboot",cmd_reboot_fastboot, TRUE, FALSE);
+	fastboot_register("oem mmc init",cmd_mmc_init, TRUE, FALSE);
+        fastboot_register("oem mmc card verify",cmd_get_mmc_card_len, TRUE, FALSE);
+        fastboot_register("oem mmc host query",cmd_query_mmc_host, TRUE, FALSE);
 
 	fastboot_publish("product", PROJECT);
 	fastboot_publish("kernel", "lk");

@@ -40,6 +40,8 @@
 //#define MMC_MSDC_DRV_PRELOADER
 #define MMC_MSDC_DRV_LK
 
+#define MMC_MSDC_SD_CARD_SUPPORT
+
 #if !defined(MMC_MSDC_DRV_CTP) && !defined(MMC_MSDC_DRV_PRELOADER) && !defined(MMC_MSDC_DRV_LK)
 #error Please define of MMC_MSDC_DRV_CTP, MMC_MSDC_DRV_PRELOADER, MMC_MSDC_DRV_LK
 #elif defined(MMC_MSDC_DRV_CTP) && defined(MMC_MSDC_DRV_PRELOADER)
@@ -77,11 +79,7 @@
 //#define MTK_MSDC_BRINGUP_DEBUG
 #endif
 
-#if (defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM))
 #define MSDC_MAX_NUM            (2)
-#else
-#define MSDC_MAX_NUM            (1)
-#endif
 
 #if defined(MMC_MSDC_DRV_CTP)
 #define MSDC_ENABLE_ENH_DMA_MODE

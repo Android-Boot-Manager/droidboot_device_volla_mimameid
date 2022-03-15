@@ -287,7 +287,7 @@ typedef enum MSDC_POWER_VOL_TAG {
 	VOL_3600 = 3600
 } MSDC_POWER_VOLTAGE;
 
-#if defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM)
+#if (defined(MMC_MSDC_DRV_CTP) && !defined(FPGA_PLATFORM)) || defined(MMC_MSDC_SD_CARD_SUPPORT)
 typedef enum MSDC_POWER_TAG {
 	MSDC_VMC,
 	MSDC_VMCH,
@@ -320,6 +320,72 @@ typedef enum MSDC_POWER_TAG {
 #define RESPSTENSEL_HS_DEFAULT          1
 #define CRCSTSENSEL_FPGA_DEFAULT        0
 
+#if defined(MMC_MSDC_SD_CARD_SUPPORT)
+#define REG_VEMC_VOSEL_CAL      PMIC_RG_VEMC_VOCAL_ADDR
+#define MASK_VEMC_VOSEL_CAL     PMIC_RG_VEMC_VOCAL_MASK
+#define SHIFT_VEMC_VOSEL_CAL    PMIC_RG_VEMC_VOCAL_SHIFT
+#define FIELD_VEMC_VOSEL_CAL    (MASK_VEMC_VOSEL_CAL \
+					<< SHIFT_VEMC_VOSEL_CAL)
+
+#define REG_VEMC_VOSEL          PMIC_RG_VEMC_VOSEL_ADDR
+#define MASK_VEMC_VOSEL         PMIC_RG_VEMC_VOSEL_MASK
+#define SHIFT_VEMC_VOSEL        PMIC_RG_VEMC_VOSEL_SHIFT
+#define FIELD_VEMC_VOSEL        (MASK_VEMC_VOSEL << SHIFT_VEMC_VOSEL)
+
+#define REG_VEMC_EN             PMIC_RG_LDO_VEMC_EN_ADDR
+#define MASK_VEMC_EN            PMIC_RG_LDO_VEMC_EN_MASK
+#define SHIFT_VEMC_EN           PMIC_RG_LDO_VEMC_EN_SHIFT
+#define FIELD_VEMC_EN           (MASK_VEMC_EN << SHIFT_VEMC_EN)
+
+#define REG_VMC_VOSEL_CAL       PMIC_RG_VMC_VOCAL_ADDR
+#define MASK_VMC_VOSEL_CAL      PMIC_RG_VMC_VOCAL_MASK
+#define SHIFT_VMC_VOSEL_CAL     PMIC_RG_VMC_VOCAL_SHIFT
+#define FIELD_VMC_VOSEL_CAL     (MASK_VMC_VOSEL_CAL \
+					<< SHIFT_VMC_VOSEL_CAL)
+
+#define REG_VMC_VOSEL           PMIC_RG_VMC_VOSEL_ADDR
+#define MASK_VMC_VOSEL          PMIC_RG_VMC_VOSEL_MASK
+#define SHIFT_VMC_VOSEL         PMIC_RG_VMC_VOSEL_SHIFT
+#define FIELD_VMC_VOSEL         (MASK_VMC_VOSEL << SHIFT_VMC_VOSEL)
+
+#define REG_VMC_EN              PMIC_RG_LDO_VMC_EN_ADDR
+#define MASK_VMC_EN             PMIC_RG_LDO_VMC_EN_MASK
+#define SHIFT_VMC_EN            PMIC_RG_LDO_VMC_EN_SHIFT
+#define FIELD_VMC_EN            (MASK_VMC_EN << SHIFT_VMC_EN)
+
+#define REG_VMCH_VOSEL_CAL      PMIC_RG_VMCH_VOCAL_ADDR
+#define MASK_VMCH_VOSEL_CAL     PMIC_RG_VMCH_VOCAL_MASK
+#define SHIFT_VMCH_VOSEL_CAL    PMIC_RG_VMCH_VOCAL_SHIFT
+#define FIELD_VMCH_VOSEL_CAL    (MASK_VMCH_VOSEL_CAL \
+					<< SHIFT_VMCH_VOSEL_CAL)
+
+#define REG_VMCH_VOSEL          PMIC_RG_VMCH_VOSEL_ADDR
+#define MASK_VMCH_VOSEL         PMIC_RG_VMCH_VOSEL_MASK
+#define SHIFT_VMCH_VOSEL        PMIC_RG_VMCH_VOSEL_SHIFT
+#define FIELD_VMCH_VOSEL        (MASK_VMCH_VOSEL << SHIFT_VMCH_VOSEL)
+
+#define REG_VMCH_EN             PMIC_RG_LDO_VMCH_EN_ADDR
+#define MASK_VMCH_EN            PMIC_RG_LDO_VMCH_EN_MASK
+#define SHIFT_VMCH_EN           PMIC_RG_LDO_VMCH_EN_SHIFT
+#define FIELD_VMCH_EN           (MASK_VMCH_EN << SHIFT_VMCH_EN)
+
+#define VEMC_VOSEL_CAL_mV(cal)  ((cal <= 0) ? (0) : (cal/10))
+#define VEMC_VOSEL_2V9          (0xa)
+#define VEMC_VOSEL_3V           (0xb)
+#define VEMC_VOSEL_3V3          (0xd)
+#define VMC_VOSEL_CAL_mV(cal)   ((cal <= 0) ? (0) : (cal/10))
+#define VMC_VOSEL_1V8           (0x4)
+#define VMC_VOSEL_2V9           (0xa)
+#define VMC_VOSEL_3V            (0xb)
+#define VMC_VOSEL_3V3           (0xd)
+#define VMCH_VOSEL_CAL_mV(cal)  ((cal <= 0) ? (0) : (cal/10))
+#define VMCH_VOSEL_2V9          (0xa)
+#define VMCH_VOSEL_3V           (0xb)
+#define VMCH_VOSEL_3V3          (0xd)
+
+#define EMMC_VOL_ACTUAL         VOL_3000
+#define SD_VOL_ACTUAL           VOL_3000
+#endif
 
 #endif /* end of _MSDC_IO_H_ */
 

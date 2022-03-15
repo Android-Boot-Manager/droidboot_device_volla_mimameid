@@ -76,4 +76,9 @@ void cmd_set_active(const char *arg, void *data, unsigned sz);
 #ifdef FASTBOOT_DUMP_LOG
 void cmd_oem_dump_log(const char *arg, void *data, unsigned sz);
 #endif
+
+void cmd_get_mmc_card_len(const char *arg, void *data, unsigned sz);
+void cmd_query_mmc_host(const char *arg, void *data, unsigned sz);
+void cmd_mmc_init(const char *arg, void *data, unsigned sz);
+
 #endif
