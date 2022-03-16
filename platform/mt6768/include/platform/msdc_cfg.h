@@ -166,9 +166,9 @@
 
 #define FEATURE_EMCP
 
-#if defined(MMC_MSDC_DRV_CTP)
 #define FEATURE_MMC_CARD_DETECT
 
+#if defined(MMC_MSDC_DRV_CTP)
 /* CTP use autocmd23 */
 #define MSDC_USE_DATA_TAG         (0) /* autocmd23 with data tag */
 #define MSDC_USE_RELIABLE_WRITE   (1) /* autocmd23 with reliable write */
@@ -210,8 +210,8 @@
 /*--------------------------------------------------------------------------*/
 /* Debug Definition                                                         */
 /*--------------------------------------------------------------------------*/
-#define MMC_DEBUG               (0)
-#define MSDC_DEBUG              (0)
+#define MMC_DEBUG               (1)
+#define MSDC_DEBUG              (1)
 
 #if MSDC_DEBUG
 #define MSG_DEBUG
@@ -219,8 +219,8 @@
 
 #define MSDC_TUNE_LOG           (1)
 
-#define MSDC_SLT                (0)
-#define MSDC_SLT_MASK_LOG       (1)
+#define MSDC_SLT                (1)
+#define MSDC_SLT_MASK_LOG       (0)
 #define MSDC_SLT_ANALYSIS       (0)
 #if MSDC_SLT_ANALYSIS
 #undef FEATURE_MMC_WR_TUNING

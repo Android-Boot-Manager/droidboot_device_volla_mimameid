@@ -1037,11 +1037,13 @@ int msdc_cmd(struct mmc_host *host, struct mmc_command *cmd)
 	int err;
 
 	err = msdc_send_cmd(host, cmd);
-	if (err != MMC_ERR_NONE)
+	if (err != MMC_ERR_NONE){
+	    MSG(ERR, "msdc_send_cmd failed, err: %d \n", err);
 		return err;
-
+}
 	err = msdc_wait_rsp(host, cmd);
 	if (err == MMC_ERR_BADCRC) {
+	    MSG(ERR, "msdc_wait_rsp failed, err: %d \n", err);
 		u32 base = host->base;
 		u32 tmp = MSDC_READ32(SDC_CMD);
 
@@ -1069,6 +1071,7 @@ int msdc_cmd(struct mmc_host *host, struct mmc_command *cmd)
 		}
 		#endif
 	}
+	MSG(ERR, "msdc_cmd done, err: %d \n", err);
 	return err;
 }
 
