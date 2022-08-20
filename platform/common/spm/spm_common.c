@@ -70,7 +70,7 @@ extern int mboot_common_load_part(char *part_name, char *img_name, unsigned long
 #ifdef DEVICE_TREE_SUPPORT
 #define PCM_FIRMWARE_VERSION_SIZE 128
 
-bool is_spmfw_magic(int magic)
+int is_spmfw_magic(int magic)
 {
 	bool ret = 0;
 

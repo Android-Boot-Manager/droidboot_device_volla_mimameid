@@ -1,7 +1,9 @@
 #
 LOCAL_DIR := $(GET_LOCAL_DIR)
 TARGET := k69v1_64
+DROIDBOOT_PLATFORM := mimameid
 MODULES += app/mt_boot \
+           app/droidboot_gui \
            dev/lcm
 MTK_EMMC_SUPPORT = yes
 MTK_MMC_COMBO_DRV = yes
