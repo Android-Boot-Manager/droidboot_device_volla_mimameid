@@ -80,7 +80,7 @@ static void show_dm_verity_error(void)
 	return;
 }
 
-void dm_verity_handler(AvbHashtreeErrorMode hashtree_error_mode)
+void dm_verity_handler(uint32_t hashtree_error_mode)
 {
 #ifdef AVB_PERSIST_VALUE_SUPPORT
 	if (hashtree_error_mode == AVB_HASHTREE_ERROR_MODE_EIO)

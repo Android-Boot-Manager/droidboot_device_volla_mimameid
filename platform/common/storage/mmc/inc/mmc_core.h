@@ -37,7 +37,9 @@
 #if defined(FEATURE_MMC_SDIO)
 #include "mmc_sdio.h"
 #endif
-
+#include "msdc.h"
+#include "mmc_common_inter.h"
+#include "mmc_core.h"
 #if defined(FEATURE_MMC_CMDQ)
 #include "mmc_cmdq.h"
 #endif
@@ -904,8 +906,20 @@ extern int mmc_sdio_enable_irq_gap(struct mmc_card *card, int enable);
 extern int mmc_legacy_init(int verbose);
 #endif
 
+typedef enum {
+        EMMC_PART_USER = EXT_CSD_PART_CFG_DEFT_PART,
+        EMMC_PART_BOOT1 = EXT_CSD_PART_CFG_BOOT_PART_1,
+        EMMC_PART_BOOT2 = EXT_CSD_PART_CFG_BOOT_PART_2,
+        EMMC_PART_RPMB = EXT_CSD_PART_CFG_RPMB_PART,
+        EMMC_PART_GP1 = EXT_CSD_PART_CFG_GP_PART_1,
+        EMMC_PART_GP2 = EXT_CSD_PART_CFG_GP_PART_2,
+        EMMC_PART_GP3 = EXT_CSD_PART_CFG_GP_PART_3,
+        EMMC_PART_GP4 = EXT_CSD_PART_CFG_GP_PART_4,
+        EMMC_PART_END
+} Region;
+
 #if defined(FEATURE_MMC_POWER_ON_WP)
-extern unsigned int mmc_set_write_protect(int dev_num,u32 partition_id,unsigned long blknr,u32 blkcnt,STORAGE_WP_TYPE type);
+extern unsigned int mmc_set_write_protect(int dev_num,Region partition,unsigned long blknr,u32 blkcnt,STORAGE_WP_TYPE type);
 #endif
 
 #if defined(MTK_EMMC_SUPPORT_OTP)
@@ -913,19 +927,6 @@ uint32 mmc_otp_start(int dev_num, unsigned long otpStart);
 int mmc_otp_lock(int dev_num, unsigned long blknr, ulong blkcnt, unsigned int part_id);
 int mmc_otp_status(int dev_num, unsigned long blknr, ulong blkcnt, unsigned int *status);
 #endif
-
-typedef enum {
-	EMMC_PART_USER = EXT_CSD_PART_CFG_DEFT_PART,
-	EMMC_PART_BOOT1 = EXT_CSD_PART_CFG_BOOT_PART_1,
-	EMMC_PART_BOOT2 = EXT_CSD_PART_CFG_BOOT_PART_2,
-	EMMC_PART_RPMB = EXT_CSD_PART_CFG_RPMB_PART,
-	EMMC_PART_GP1 = EXT_CSD_PART_CFG_GP_PART_1,
-	EMMC_PART_GP2 = EXT_CSD_PART_CFG_GP_PART_2,
-	EMMC_PART_GP3 = EXT_CSD_PART_CFG_GP_PART_3,
-	EMMC_PART_GP4 = EXT_CSD_PART_CFG_GP_PART_4,
-	EMMC_PART_END
-} Region;
-
 
 #ifdef __cplusplus
 }
