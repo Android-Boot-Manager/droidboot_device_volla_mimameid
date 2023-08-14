@@ -35,5 +35,5 @@ jobs:
     - name : Upload bootloader (unsigned)
       uses: actions/upload-artifact@v2
       with:
-        name: mimameid_cosmocom_lk-unsigned.img
+        name: mimameid_lk-unsigned.img
         path: /home/runner/work/droidboot_device_volla_mimameid/droidboot_device_volla_mimameid/lk.img
