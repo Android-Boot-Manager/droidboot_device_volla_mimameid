@@ -120,6 +120,10 @@ extern u8 g_oemkey[OEM_PUBK_SZ];
 #undef LK_DL_CHECK_BLOCK_LEVEL
 #endif
 
+//ABM include file with init functions
+#include <droidboot_main.h>
+#include <droidboot_boot_logo.h>
+
 extern void platform_early_init_timer();
 extern void jump_da(u32 addr, u32 arg1, u32 arg2);
 extern int i2c_hw_init(void);
@@ -716,6 +720,12 @@ void platform_init(void)
 #ifndef MACH_FPGA
 	PROFILING_START("boot mode select");
 
+    //ABM: init lvgl stuff
+    video_printf("Enter droidboot init\n");
+    mtk_wdt_disable();
+    droidboot_init();
+    mt65xx_backlight_on();
+    video_printf("Droidboot init done\n");
 #if !defined(NO_BOOT_MODE_SEL)
 	boot_mode_select();
 #endif
@@ -761,7 +771,8 @@ void platform_init(void)
 
 #ifndef MACH_FPGA_NO_DISPLAY
 		PROFILING_START("show logo");
-		mt_disp_show_boot_logo();
+		droidboot_show_boot_logo();
+		video_printf("Droidboot show boot logo done\n");
 		PROFILING_END();
 #endif
 		video_printf(" => Downloading...\n");
@@ -801,7 +812,8 @@ void platform_init(void)
 			mtk_bat_allow_backlight_enable()) {
 #ifndef MACH_FPGA_NO_DISPLAY
 		PROFILING_START("show logo");
-		mt_disp_show_boot_logo();
+		droidboot_show_boot_logo();
+		video_printf("Droidboot show boot logo done\n");
 		PROFILING_END();
 #endif // MACH_FPGA_NO_DISPLAY
 #ifndef MACH_FPGA

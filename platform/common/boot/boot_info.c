@@ -73,6 +73,10 @@ static uint32_t get_bootimg_ramdisk_load_addr(void)
 	return (uint32_t)ramdisk_addr;
 }
 
+uint32_t get_ramdisk_real_sz() {
+	return g_boot_info.bootimg_ramdisk_sz;
+}
+
 int relocate_ramdisk(uint32_t *ramdisk_addr, uint32_t *ramdisk_real_sz)
 {
 	uint32_t ramdisk_load_addr;

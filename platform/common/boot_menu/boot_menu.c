@@ -47,92 +47,9 @@
 #include <sys/types.h>
 #include <target/cust_key.h>
 #include <video.h>
-
-extern void cmdline_append(const char *append_string);
-typedef void (*entry_cb)(void);
-
-struct boot_menu {
-	u8 boot_mode;
-	const char *item_text;
-	entry_cb callback;
-};
-
-//register the callback function
-void ftrace_cb()
-{
-	cmdline_append("androidboot.boot_trace=1");
-}
-
-void kmemleak_cb()
-{
-	cmdline_append("kmemleak=on");
-}
-
-void initcall_cb()
-{
-	cmdline_append("initcall_debug=1 log_buf_len=4M");
-}
-
-struct boot_menu ui_entry[] = {
-	{RECOVERY_BOOT,	"[Recovery    Mode]",            NULL},
-	{FASTBOOT,      "[Fastboot    Mode]",            NULL},
-	{NORMAL_BOOT,	"[Normal      Boot]",            NULL},
-#if !defined(USER_LOAD) || defined(MTK_BUILD_ENHANCE_MENU)
-	{NORMAL_BOOT,   "[Normal      Boot +ftrace]",    ftrace_cb},
-	{NORMAL_BOOT,   "[Normal      kmemleak on]",     kmemleak_cb},
-	{NORMAL_BOOT,   "[Normal      Boot +initcall]",  initcall_cb},
-#endif
-};
-
-static void update_menu(unsigned int index) {
-	#define LEN 100
-	const char* title_msg = "Select Boot Mode:\n[VOLUME_UP to select.  VOLUME_DOWN is OK.]\n\n";
-	char str_buf[LEN];
-	unsigned int i, length;
-
-	video_set_cursor(video_get_rows()/2, 0);
-	video_printf(title_msg);
-
-	for (i = 0; i < countof(ui_entry); i++) {
-		memset(str_buf, 0, LEN);
-		length = strlen(ui_entry[i].item_text);
-		snprintf(str_buf, length+1, "%s", ui_entry[i].item_text);
-		if (i == index) {
-			dprintf(0, "Switch to %s mode.\n", str_buf);
-			sprintf(str_buf+length, "     <<==\n");
-		} else
-			sprintf(str_buf+length, "         \n");
-		video_printf(str_buf);
-	}
-}
+#include <droidboot_platforms/lk/common_mtk/src/lk_mtk_common.h>
 
 void boot_menu_select() {
-	//0=recovery mode          1=fastboot      2=normal boot
-	//3=normal boot + ftrace   4=kmemleak on   5=Boot + initcall
-	unsigned int select = 0;
-
-	video_clean_screen();
-	update_menu(0);
-
-	while (1) {
-		if (mtk_detect_key(MT65XX_MENU_SELECT_KEY)) { //VOL_UP
-			select = (select + 1) % countof(ui_entry);
-			update_menu(select);
-			mdelay(300);
-		} else if (mtk_detect_key(MT65XX_MENU_OK_KEY)) { //VOL_DOWN
-			//use for OK;
-			break;
-		}
-	}
-
-	dprintf(0, "Boot mode:%s is selected!\n", ui_entry[select].item_text);
-	g_boot_mode = ui_entry[select].boot_mode;
-
-	if (ui_entry[select].callback)
-		ui_entry[select].callback();
-
-	video_set_cursor(video_get_rows() / 2 + 8, 0);
-	video_clean_screen();
-
-	return;
+    video_printf("Enter droidboot_mtk_show_boot_mode_menu");
+	g_boot_mode=droidboot_mtk_show_boot_mode_menu();
 }

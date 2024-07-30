@@ -61,7 +61,7 @@ typedef enum {
 // ---------------------------------------------------------------------------
 //  UBoot Display Export Functions
 // ---------------------------------------------------------------------------
-
+void mtkfb_draw_block(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int color);
 UINT32 mt_disp_get_vram_size(void);
 void   mt_disp_init(void *lcdbase);
 void   mt_disp_power(BOOL on);
