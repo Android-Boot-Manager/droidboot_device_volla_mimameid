@@ -33,7 +33,7 @@ jobs:
     - name: Add DTB to LK
       run: cat /home/runner/work/droidboot_device_volla_mimameid/droidboot_device_volla_mimameid/build-k69v1_64/lk.img /home/runner/work/droidboot_device_volla_mimameid/droidboot_device_volla_mimameid/main_dtb_header.bin > /home/runner/work/droidboot_device_volla_mimameid/droidboot_device_volla_mimameid/lk.img
     - name : Upload bootloader (unsigned)
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: mimameid_lk-unsigned.img
         path: /home/runner/work/droidboot_device_volla_mimameid/droidboot_device_volla_mimameid/lk.img
